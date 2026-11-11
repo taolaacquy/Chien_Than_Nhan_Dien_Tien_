@@ -18,7 +18,8 @@ MODEL_PATH = BASE_DIR / "best.onnx"
 app = FastAPI(title="Money Identifier AI", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Restrict this to the deployed app's origin in production.
+    # The backend is intended to stay on the laptop/local network.
+    allow_origins=["*"],
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
@@ -41,6 +42,12 @@ VND_PER_UNIT: dict[str, Decimal] = {
     "VND": Decimal("1"),
 }
 NO_DECIMAL_CURRENCIES = {"VND", "KRW", "JPY", "KHR"}
+EXCHANGE_DISPLAY_UNITS = {
+    "VND": Decimal("1000"),
+    "KRW": Decimal("1000"),
+    "KHR": Decimal("1000"),
+    "JPY": Decimal("100"),
+}
 
 
 def format_amount(value: Decimal, currency: str) -> str:
@@ -196,9 +203,12 @@ async def predict_currency(
         converted_text = format_amount(converted_total, target_currency)
         if len(actual_currencies) == 1:
             source_currency = actual_currencies[0]
+            display_unit = EXCHANGE_DISPLAY_UNITS.get(
+                source_currency, Decimal("1")
+            )
             exchange_rate = (
-                f"{format_amount(Decimal('1'), source_currency)} = "
-                f"{format_amount(VND_PER_UNIT[source_currency] / VND_PER_UNIT[target_currency], target_currency)}"
+                f"{format_amount(display_unit, source_currency)} = "
+                f"{format_amount(display_unit * VND_PER_UNIT[source_currency] / VND_PER_UNIT[target_currency], target_currency)}"
             )
         else:
             exchange_rate = "Đã quy đổi riêng từng loại tiền theo bảng tỷ giá."

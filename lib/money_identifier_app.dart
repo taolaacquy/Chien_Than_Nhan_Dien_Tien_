@@ -172,7 +172,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
     try {
       final cameras = await availableCameras();
       if (cameras.isEmpty) {
-        throw Exception('Kh?ng t?m th?y camera tr?n thi?t b?.');
+        throw Exception('Không tìm thấy camera trên thiết bị.');
       }
       final camera = cameras.firstWhere(
         (item) => item.lensDirection == CameraLensDirection.back,
@@ -200,7 +200,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
         _cameraInitializing = false;
         if (_page == 1) {
           _error =
-              'Kh?ng m? ???c camera. H?y c?p quy?n camera r?i th? l?i.\n$error';
+              'Không mở được camera. Hãy cấp quyền camera rồi thử lại.\n$error';
         }
       });
     }
@@ -233,7 +233,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = 'Kh?ng ch?p ???c ?nh t? camera.\n$error';
+        _error = 'Không chụp được ảnh từ camera.\n$error';
       });
     }
   }
@@ -306,7 +306,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = 'Kh?ng th? m? ?nh ?? ch?n.\n$error';
+        _error = 'Không thể mở ảnh đã chọn.\n$error';
         _page = 1;
       });
     }
@@ -346,7 +346,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
 
       final body = jsonDecode(response.body);
       if (body is! Map<String, dynamic>) {
-        throw const FormatException('Backend tr? v? d? li?u kh?ng h?p l?.');
+        throw const FormatException('Backend trả về dữ liệu không hợp lệ.');
       }
       if (!mounted) return;
       setState(() {
@@ -360,7 +360,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
       setState(() {
         _loading = false;
         _backendOnline = false;
-        _error = 'Kh?ng k?t n?i ???c backend t?i $_baseUrl.\n$error';
+        _error = 'Không kết nối được backend tại $_baseUrl.\n$error';
       });
     }
   }
@@ -553,7 +553,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Theo bảng tỷ giá được cung cấp. Ví dụ: 50.000 VND ≈ 1,93 USD.',
+                  'Theo bảng tỷ giá được cung cấp. Ví dụ: 50.000 VND ≈ 1,96 USD.',
                   style: TextStyle(color: Colors.white, height: 1.45),
                 ),
                 SizedBox(height: 6),
@@ -568,7 +568,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
           _detailCard(
             icon: Icons.info_outline_rounded,
             title: 'Lưu ý về nhận diện',
-            detail: 'Model hỗ trợ VND, USD, KRW, THB và INR. Kết quả AI chỉ là nhận diện hình ảnh, không xác thực tiền thật hay tiền giả.',
+            detail: 'Model hiện hỗ trợ VND, USD, EUR, CNY, JPY, THB, TRY, KHR, KRW và INR. Kết quả AI chỉ là nhận diện hình ảnh, không xác thực tiền thật hay tiền giả.',
           ),
           const SizedBox(height: 20),
           _primaryButton(
@@ -982,7 +982,7 @@ class _MoneyIdentifierAppState extends State<MoneyIdentifierApp>
                     : '${match.first['name']} ($code)';
               })
               .join(', ')
-        : '${result['detected_currency'] ?? 'Ch?a x?c ??nh'}';
+        : '${result['detected_currency'] ?? 'Chưa xác định'}';
     final confidence = result['confidence'];
     final confidencePercent = confidence is num
         ? '${(confidence * 100).round()}%'

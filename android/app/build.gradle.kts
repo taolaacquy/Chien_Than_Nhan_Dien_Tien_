@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Keep this stable for sideloaded updates; choose a unique ID before public release.
         applicationId = "com.example.money_identifier_ai"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
@@ -31,8 +31,8 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Debug signing is convenient for private APK installs. Configure a release
+            // keystore before distributing through an app store.
             signingConfig = signingConfigs.getByName("debug")
         }
     }

@@ -30,9 +30,19 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+**/build/
 /coverage/
-backend_ai/.venv/
+**/.venv/
+**/.gradle/
+**/.kotlin/
+**/__pycache__/
+*.onnx.tmp
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+android/key.properties
 
 # Symbolication related
 app.*.symbols
